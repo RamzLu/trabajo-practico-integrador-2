@@ -1,4 +1,6 @@
 import { model, Schema, Types } from "mongoose";
+import { UserModel } from "./user.model.js";
+import { TagModel } from "./tag.model.js";
 
 const articleSchema = new Schema({
   title: {
@@ -26,6 +28,13 @@ const articleSchema = new Schema({
     type: Types.ObjectId,
     ref: "User",
     required: true,
+    validate: {
+      validator: async function (value) {
+        const existAuhtor = await UserModel.findById(value);
+        return !!existAuhtor;
+      },
+      message: "El autor referenciado no existe.",
+    },
   },
   //* RELACIÓN N:M con Tag
   tags: {

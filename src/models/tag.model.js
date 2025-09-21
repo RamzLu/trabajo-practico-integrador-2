@@ -7,7 +7,7 @@ const tagSchema = new Schema({
     minlength: 2,
     maxlength: 30,
     required: true,
-    match: [/^\S+$/, "El username no puede contener espacios"],
+    match: [/^\S+$/, "El tag no puede contener espacios"],
   },
   description: {
     type: String,
@@ -15,4 +15,4 @@ const tagSchema = new Schema({
   },
 });
 
-export const TagModel = model("Article", articleSchema);
+export const TagModel = model("Tag", tagSchema);
