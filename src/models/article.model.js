@@ -21,12 +21,13 @@ const articleSchema = new Schema({
     enum: ["published", "archived"],
     default: "published",
   },
-  // RELACIÓN 1:N con User
+  //* RELACIÓN 1:N con User
   author: {
     type: Types.ObjectId,
     ref: "User",
     required: true,
   },
+  //* RELACIÓN N:M con Tag
   tags: {
     type: [Types.ObjectId],
     ref: "Tag",
