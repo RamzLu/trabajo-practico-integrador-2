@@ -61,6 +61,13 @@ const userSchema = new Schema({
       type: String,
     },
   },
+  deleteAt: {
+    type: Date,
+    default: null,
+  },
 });
-
+userSchema.pre(/^find/, function (next) {
+  this.where({ deleteAt: null });
+  next();
+});
 export const UserModel = model("User", userSchema);
