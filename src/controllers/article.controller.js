@@ -52,7 +52,7 @@ export const getArticleById = async (req, res) => {
 export const deleteArticle = async (req, res) => {
   const { id } = req.params;
   try {
-    const article = await ArticleModel.findByIdAndDelete(id);
+    const article = await ArticleModel.findOneAndDelete(id);
     return res.status(200).json({
       msg: "Articulo eliminado",
       data: article,
