@@ -8,7 +8,7 @@ import {
 
 export const routeUser = Router();
 
-routeUser.delete("/user/:id", deleteUser);
-routeUser.get("/user", getAllUsers);
-routeUser.get("/user/:id", getUserById);
-routeUser.put("/user/:id", updateUser);
+routeUser.delete("/users/:id", deleteUser);
+routeUser.get("/users", getAllUsers);
+routeUser.get("/users/:id", getUserById);
+routeUser.put("/users/:id", updateUser);
