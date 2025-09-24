@@ -1,3 +1,4 @@
+import { ArticleModel } from "../models/article.model.js";
 import { CommentModel } from "../models/comment.model.js";
 
 export const createComment = async (req, res) => {
@@ -68,11 +69,22 @@ export const deleteComment = async (req, res) => {
   }
 };
 
-export const getCommentById = async (req, res) => {
-  const { id } = req.params;
+export const getCommentsByArticle = async (req, res) => {
+  const { articleId } = req.params;
   try {
-    const comment = await CommentModel.findById(id);
-    return res.status(200).json(comment);
+    const article = await ArticleModel.findById(articleId)
+      .populate("author", "username profile.firstName profile.lastName")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "author",
+          select: "username profile.firstName profile.lastName",
+        },
+      });
+    return res.status(200).json({
+      msg: "Comentarios del artículo obtenidos correctamente",
+      data: article,
+    });
   } catch (error) {
     console.log(error);
     return res.status(501).json({
