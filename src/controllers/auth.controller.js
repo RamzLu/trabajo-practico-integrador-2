@@ -1,3 +1,4 @@
+import e from "express";
 import { comparePassword, hashPassword } from "../helpers/bcrypt.helper.js";
 import { generateToken } from "../helpers/jwt.helper.js";
 import { UserModel } from "../models/user.model.js";
@@ -75,6 +76,50 @@ export const logout = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
+      msg: "Error interno del servidor",
+    });
+  }
+};
+
+export const profile = async (req, res) => {
+  const user = req.userLog;
+  try {
+    return res.status(200).json({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      biography: user.biography,
+      avatarUrl: user.avatarUrl,
+      birthDate: user.birthDate,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(501).json({
+      msg: "Error interno del servidor.",
+    });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  const user = req.userLog;
+  const { profile } = req.body;
+
+  try {
+    const userDatabase = await UserModel.findById(user.id);
+
+    const updatedProfile = { ...userDatabase.profile, ...profile };
+
+    await UserModel.updateOne(
+      { _id: user.id },
+      { $set: { profile: updatedProfile } }
+    );
+
+    return res.status(200).json({
+      msg: "Perfil actualizado correctamente",
+      data: updatedProfile,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(501).json({
       msg: "Error interno del servidor",
     });
   }
