@@ -32,7 +32,7 @@ export const getTags = async (req, res) => {
 export const deleteTag = async (req, res) => {
   const { id } = req.params;
   try {
-    const tag = await TagModel.findByIdAndDelete(id);
+    const tag = await TagModel.findOneAndDelete(id);
     return res.status(200).json({
       msg: "Tag eliminada correctamente",
       data: tag,
