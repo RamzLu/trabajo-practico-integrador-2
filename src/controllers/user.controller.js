@@ -22,7 +22,8 @@ export const deleteUser = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const user = await UserModel.find();
+    // select porque el campo ya esta en mi schema
+    const user = await UserModel.find().select("-password");
     return res.status(200).json({
       msg: "Lista de usuarios:",
       data: user,
@@ -38,7 +39,7 @@ export const getAllUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await UserModel.findById(id);
+    const user = await UserModel.findById(id).select("-password");
     return res.status(200).json(user);
   } catch (error) {
     console.log(error);

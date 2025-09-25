@@ -19,7 +19,20 @@ export const createComment = async (req, res) => {
 
 export const getAllComments = async (req, res) => {
   try {
-    const comment = await CommentModel.find();
+    const comment = await CommentModel.find().populate([
+      {
+        path: "author",
+        select: "-password",
+      },
+      {
+        path: "article",
+        populate: {
+          path: "author",
+          model: "User",
+          select: "-password",
+        },
+      },
+    ]);
     return res.status(200).json({
       msg: "Todos los comentarios:",
       data: comment,

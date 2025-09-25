@@ -26,7 +26,16 @@ export const createArticle = async (req, res) => {
 
 export const getAllArticles = async (req, res) => {
   try {
-    const article = await ArticleModel.find();
+    const article = await ArticleModel.find().populate([
+      {
+        path: "comments",
+        populate: {
+          path: "author",
+          model: "User",
+          select: "-password",
+        },
+      },
+    ]);
     return res.status(200).json(article);
   } catch (error) {
     console.log(error);
@@ -39,7 +48,16 @@ export const getAllArticles = async (req, res) => {
 export const getArticleById = async (req, res) => {
   const { id } = req.params;
   try {
-    const article = await ArticleModel.findById(id);
+    const article = await ArticleModel.findById(id).populate([
+      {
+        path: "comments",
+        populate: {
+          path: "author",
+          model: "User",
+          select: "-password",
+        },
+      },
+    ]);
     return res.status(200).json(article);
   } catch (error) {
     console.log(error);
@@ -79,7 +97,16 @@ export const updateArticle = async (req, res) => {
         tags,
       },
       { new: true }
-    );
+    ).populate([
+      {
+        path: "comments",
+        populate: {
+          path: "author",
+          model: "User",
+          select: "-password",
+        },
+      },
+    ]);
     return res.status(201).json({
       msg: "Articulo actualizado correctamente",
       data: article,
