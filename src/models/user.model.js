@@ -68,10 +68,17 @@ const userSchema = new Schema(
     },
   },
   {
+    toJSON: { virtuals: true },
     versionKey: false,
     timestamps: true,
   }
 );
+userSchema.virtual("articles", {
+  ref: "Article",
+  localField: "_id",
+  foreignField: "author",
+});
+
 userSchema.pre(/^find/, function (next) {
   this.where({ deleteAt: null });
   next();

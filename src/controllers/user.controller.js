@@ -1,3 +1,4 @@
+import { populate } from "dotenv";
 import { UserModel } from "../models/user.model.js";
 
 export const deleteUser = async (req, res) => {
@@ -39,7 +40,25 @@ export const getAllUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await UserModel.findById(id).select("-password");
+    const user = await UserModel.findById(id)
+      .populate({
+        path: "articles",
+        populate: {
+          path: "author",
+          model: "User",
+          select: "username email profile",
+        },
+        populate: {
+          path: "comments",
+          model: "Comment",
+          populate: {
+            path: "author",
+            model: "User",
+            select: "username email profile",
+          },
+        },
+      })
+      .select("-password");
     return res.status(200).json(user);
   } catch (error) {
     console.log(error);
