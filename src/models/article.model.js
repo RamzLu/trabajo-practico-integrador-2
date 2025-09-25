@@ -47,6 +47,7 @@ const articleSchema = new Schema(
   {
     versionKey: false,
     toJSON: { virtuals: true },
+    timestamps: true,
   }
 );
 

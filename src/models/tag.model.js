@@ -1,20 +1,26 @@
 import { model, Schema } from "mongoose";
 import { ArticleModel } from "./article.model.js";
 
-const tagSchema = new Schema({
-  name: {
-    type: String,
-    unique: true,
-    minlength: 2,
-    maxlength: 30,
-    required: true,
-    match: [/^\S+$/, "El tag no puede contener espacios"],
+const tagSchema = new Schema(
+  {
+    name: {
+      type: String,
+      unique: true,
+      minlength: 2,
+      maxlength: 30,
+      required: true,
+      match: [/^\S+$/, "El tag no puede contener espacios"],
+    },
+    description: {
+      type: String,
+      maxlength: 200,
+    },
   },
-  description: {
-    type: String,
-    maxlength: 200,
-  },
-});
+  {
+    versionKey: false,
+    timestamps: true,
+  }
+);
 // los hooks de middleware (pre y post)
 // no existen específicamente para findByIdAndDelete, solo para findOneAndDelete, findOneAndUpdate, etc
 tagSchema.post("findOneAndDelete", async (tag) => {
