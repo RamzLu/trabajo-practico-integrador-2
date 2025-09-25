@@ -73,14 +73,15 @@ export const createUserValidation = [
 
 export const updateUserValidation = [
   param("id")
-    .isInt({ gt: 0 })
-    .withMessage("El ID del usuario debe ser un entero positivo.")
+    .notEmpty()
+    .withMessage("El id del tag es obligatorio.")
+    .isMongoId()
+    .withMessage("El id del tag no es un ObjectId válido.")
     .custom(async (value) => {
-      const user = await UserModel.findByPk(value);
-      if (!user) {
-        throw new Error("El usuario no existe.");
+      const tag = await UserModel.findById(value);
+      if (!tag) {
+        throw new Error("El user no existe.");
       }
-      return true;
     }),
   body("username")
     .optional()
@@ -186,14 +187,15 @@ export const updateOnlyProfile = [
 
 const userIdValidation = [
   param("id")
-    .isInt({ gt: 0 })
-    .withMessage("El ID del usuario debe ser un entero positivo.")
+    .notEmpty()
+    .withMessage("El id del tag es obligatorio.")
+    .isMongoId()
+    .withMessage("El id del tag no es un ObjectId válido.")
     .custom(async (value) => {
-      const user = await UserModel.findByPk(value);
-      if (!user) {
-        throw new Error("El usuario no existe.");
+      const tag = await UserModel.findById(value);
+      if (!tag) {
+        throw new Error("El user no existe.");
       }
-      return true;
     }),
 ];
 
