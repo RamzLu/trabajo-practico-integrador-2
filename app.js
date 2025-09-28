@@ -13,7 +13,7 @@ import { routeComment } from "./src/routes/comment.route.js";
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/auth", authRouter);
+app.use("/api/auth", authRouter);
 app.use("/api", routeUser);
 app.use("/api", tagRouter);
 app.use("/api", routeArticle);
